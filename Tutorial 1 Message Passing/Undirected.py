@@ -10,7 +10,7 @@ import numpy as np
 PGM = MarkovModel()
 PGM.add_nodes_from(['w1', 'w2', 'w3'])
 PGM.add_edges_from([('w1', 'w2'), ('w2', 'w3')])
-tr_matrix = np.array([1,2,3,10,1,3,3,5,2])
+tr_matrix = np.array([1,2,3,10,1,3,3,5,2]).reshape(3, 3).T.reshape(-1)
 phi = [DiscreteFactor(edge, [3, 3], tr_matrix) for edge in PGM.edges()]
 PGM.add_factors(*phi)
 
