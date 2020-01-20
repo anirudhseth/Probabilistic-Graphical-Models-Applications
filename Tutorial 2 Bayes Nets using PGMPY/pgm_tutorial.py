@@ -64,18 +64,35 @@ FEATURES = [f for f in RAW_DATA]
 
 # Task 2 ------------ Probability queries (inference)
 
-# data = pd.DataFrame(data=RAW_DATA)
-# model = BayesianModel([('delay', 'age'),
-#                        ('delay', 'gender'),
-#                        ('delay', 'avg_mat'),
-#                        ('delay', 'avg_cs')])
-# model.fit(data) # Uses the default ML-estimation
-# STATE_NAMES = model.cpds[0].state_names
-# print('State names:')
-# for s in STATE_NAMES:
-#     print(s, STATE_NAMES[s])
-# ve = VariableElimination(model)
-# separator()
+data = pd.DataFrame(data=RAW_DATA)
+model = BayesianModel([('delay', 'age'),
+                       ('delay', 'gender'),
+                       ('delay', 'avg_mat'),
+                       ('delay', 'avg_cs')])
+model.fit(data) # Uses the default ML-estimation
+STATE_NAMES = model.cpds[0].state_names
+print('State names:')
+for s in STATE_NAMES:
+    print(s, STATE_NAMES[s])
+ve = VariableElimination(model)
+q = ve.query(variables = ['delay'], evidence = {'age': '<=20'})
+print('The query is : ve.query(variables = [\'delay\'], evidence = {\'age\': \'<=20\})' )
+print(q)
+
+
+#2_2
+# q = ve.query(variables = ['age'], evidence = {'delay': '0'})
+# print()
+# print('The query is : ve.query(variables = [\'age\'], evidence = {\'delay\': \'0\')')
+# print(q)
+
+separator()
+
+# 2_4
+# q=ve.map_query(variables=['age'],evidence={'delay':'0'})
+# print()
+# print('The required query is :ve.map_query(variables=[\'age\'],evidence={\'delay\':\'0\'})')
+# print(q)
 
 # End of Task 2
 

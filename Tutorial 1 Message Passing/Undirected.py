@@ -33,4 +33,7 @@ print ('Marginal distribution over the third word is:\n',query["w3"])
 #Get conditional distribution over third word
 query=belief_propagation.query(variables=['w3'], evidence = {'w1':0},joint=False) # 0 stays for "noun"
 print('Conditional distribution over the third word, given that the first word is noun is:\n', query["w3"])
+
+query=belief_propagation.query(variables=['w3'], evidence = {'w1':0,'w2':1},joint=False) # 0 stays for "noun"
+print('Conditional distribution over the third word, given that the first word is noun  and second word is verb is:\n', query["w3"])
     
