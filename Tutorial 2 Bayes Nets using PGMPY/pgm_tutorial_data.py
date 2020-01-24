@@ -1,5 +1,6 @@
+import numpy as np
+import pandas as pd
 '''
-
 Data for use in pgm_tutorial.py
 
 @author: miker@kth.se
@@ -169,36 +170,62 @@ def ratio(data, posterior_lambda, prior_lambda = None):
     prior = t if not prior_lambda else [s for s in t if prior_lambda(s)]
     posterior = [s for s in prior if posterior_lambda(s)]
     return 0 if len(prior)==0 else len(posterior)/len(prior)
+data = pd.DataFrame(data=RAW_DATA)
+#######task 1.2#############
 
-'''#task 1.2
+# print(ratio(RAW_DATA, lambda t: t['age']=='20-23', lambda t: t['delay']=='>=2'))
+# print(ratio(RAW_DATA, lambda t: t['age']=='<=20', lambda t: t['delay']=='>=2'))
+# print(ratio(RAW_DATA, lambda t: t['age']=='23', lambda t: t['delay']=='>=2'))
+# data = pd.DataFrame(data=RAW_DATA)
+# idx=np.where(data.values[:,3]=='>=2')
+# np.where(data.values[:,0]=='20-23')
+# np.intersect1d(idx,np.where(data.values[:,0]=='20-23'))
+# np.intersect1d(idx,np.where(data.values[:,0]=='<=20'))
+# np.intersect1d(idx,np.where(data.values[:,0]=='>23'))
 
-print(ratio(data, lambda t: t['age']=='20-23', lambda t: t['delay']=='>=2'))
-print(ratio(data, lambda t: t['age']=='<=20', lambda t: t['delay']=='>=2'))
-print(ratio(data, lambda t: t['age']=='23', lambda t: t['delay']=='>=2'))
+#######task 1.2#############
 
-idx=np.where(data.values[:,3]=='>=2')
-np.where(data.values[:,0]=='20-23')
-np.intersect1d(idx,np.where(data.values[:,0]=='20-23'))
-np.intersect1d(idx,np.where(data.values[:,0]=='<=20'))
-np.intersect1d(idx,np.where(data.values[:,0]=='>23'))
-'''
+#######task 1.3#############
 
-'''#task 1.3
-
-avgma=['2<3','3<4','4<5','<2']
-delay=['0','1','>=2','NA']
-
-
-for m in avgma:
-    for d in delay:
-        print('Prob of avg_mat= ',m,' given delay is ',d,' is: ',ratio(data, lambda t: t['avg_mat']==m, lambda t: t['delay']==d))
-'''
-
-# # task 2_3
-# age=['20-23','<=20','>23']
-# delay=['0']
-
-
-# for m in age:
+# avgma=['2<3','3<4','4<5','<2']
+# delay=['0','1','>=2','NA']
+# for m in avgma:
 #     for d in delay:
-#         print('Prob of age= ',m,' given delay is ',d,' is: ',ratio(data, lambda t: t['age']==m, lambda t: t['delay']==d))
+#         print('Prob of avg_mat= ',m,' given delay is ',d,' is: ',ratio(data, lambda t: t['avg_mat']==m, lambda t: t['delay']==d))
+
+#######task 1.2#############
+
+# task 2_3
+age=['20-23','<=20','>23']
+delay=['0']
+for m in age:
+    for d in delay:
+        print('Prob of age= ',m,' given delay is ',d,' is: ',ratio(data, lambda t: t['age']==m, lambda t: t['delay']==d))
+
+# task 3_5
+age=['<=20']
+delay=['0','1','2','NA']
+idx0=np.where(data.values[:,3]=='0')
+idx1=np.where(data.values[:,3]=='1')
+idx2=np.where(data.values[:,3]=='>=2')
+idx3=np.where(data.values[:,3]=='NA')
+print('Relative Frequency')
+print('delay(0):',idx0[0].size/data.shape[0])
+print('delay(1):',idx1[0].size/data.shape[0])
+print('delay(>=2):',idx2[0].size/data.shape[0])
+print('delay(NA):',idx3[0].size/data.shape[0])
+print('Prob of age= ',m,' given delay is ',d,' is: ',ratio(data, lambda t: t['delay']=='0', lambda t: t['age']=='<=20'))
+
+# avgma=['2<3','3<4','4<5','<2']
+# gender=['0','1']
+# avgcs=['3<4','4<5','<2']
+# age=['20-23', '<=20', '>23']
+# delay=['0','1','>=2','NA']
+
+# idxDelay=np.where(np.asarray(RAW_DATA['delay'])=='0')
+# idxAge=np.where(np.asarray(RAW_DATA['age'])=='20-23')
+# idxGender=np.where(np.asarray(RAW_DATA['gender'])=='0')
+# idxavgCS=np.where(np.asarray(RAW_DATA['avg_cs'])=='3<4')
+# idxavgMat=np.where(np.asarray(RAW_DATA['avg_mat'])=='2<3')
+# num=(np.intersect1d(np.intersect1d(np.intersect1d(np.intersect1d(idxDelay,idxAge),idxGender),idxavgCS),idxavgMat))
+# print(np.size(num)/np.size(idxDelay))
