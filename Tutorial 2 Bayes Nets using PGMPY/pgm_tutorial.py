@@ -132,139 +132,111 @@ FEATURES = [f for f in RAW_DATA]
 
  # Task 4 ------------ Comparing accuracy of PGM models
 
-from scipy.stats import entropy
+# from scipy.stats import entropy
+ 
+# data = pd.DataFrame(data=RAW_DATA)
 
-data = pd.DataFrame(data=RAW_DATA)
+# model1 = BayesianModel([('delay', 'age'),
+#                         ('delay', 'gender'),
+#                         ('delay', 'avg_mat'),
+#                         ('delay', 'avg_cs')])
 
-model1 = BayesianModel([('delay', 'age'),
-                       ('delay', 'gender'),
-                       ('delay', 'avg_mat'),
-                       ('delay', 'avg_cs')])
-model1.name='Model:1'
-model2 = BayesianModel([('age', 'delay'),
-                        ('gender', 'delay'),
-                        ('avg_mat', 'delay'),
-                        ('avg_cs', 'delay')])
-model2.name='Model:2'
+# model2 = BayesianModel([('age', 'delay'),
+#                         ('gender', 'delay'),
+#                         ('avg_mat', 'delay'),
+#                         ('avg_cs', 'delay')])
 
+# models = [model1, model2]
 
-models = [model1, model2]
+# [m.fit(data) for m in models]  # ML-fit
 
-[m.fit(data) for m in models] # ML-fit
+# STATE_NAMES = model2.cpds[3].state_names
+# print('\nState names:')
+# for s in STATE_NAMES:
+#     print(s, STATE_NAMES[s])
 
-STATE_NAMES = model1.cpds[0].state_names
-print('\nState names:')
-for s in STATE_NAMES:
-    print(s, STATE_NAMES[s])
+# S = STATE_NAMES
 
-S = STATE_NAMES
+# VARIABLES = list(S.keys())
 
-VARIABLES = list(S.keys())
+# def random_query(variables, target):
+#     # Helper function, generates random evidence query
+#     n = random.randrange(1, len(variables) + 1)
+#     evidence = {v: random.choice(S[v]) for v in random.sample(variables, n)}
+#     if target in evidence: del evidence[target]
+#     return (target, evidence)
 
-def random_query(variables, target):
-    # Helper function, generates random evidence query
-    n = random.randrange(1, len(variables)+1)
-    evidence = {v: random.randrange(len(S[v])) for v in random.sample(variables, n)}
-    if target in evidence: del evidence[target]
-    return (target, evidence)
-
-
-
+# # for delay and age as target
+# queries = []
+# for target in ['delay']:
+#     variables = [v for v in VARIABLES if v != target]
+#     queries.extend([random_query(variables, target) for _ in range(200)])
+# # for target in ['age']:
+# #     variables = [v for v in ['delay','avg_mat','avg_cs','gender'] if v != target]
+# #     queries.extend([random_query(variables, target) for _ in range(200)])
 # divs = []
-# # divs will be filled with lists on the form
-# # [query, distr. in data, distr. model 1, div. model 1, distr. model 2, div. model 2]
 # for v, e in queries:
-#     try:
-#         # Relative frequencies, compared below
-#         rf = [ratio(RAW_DATA, lambda t: t['delay']==d, lambda t: t['age']=='>23')for d in ['0','1','2','NA']]
-#         # rf=[0.33,0,0.33,0.33]div = []
+#     # Relative frequencies, compared below
+#     rf = [ratio(RAW_DATA, lambda t: t[v] == s,
+#                 lambda t: all(t[k] == w for k, w in e.items())) \
+#             for s in S[v]]
 
-for target in ['delay']:
-    variables = [v for v in VARIABLES if v != target]
-    queries.extend([random_query(variables, target) for i in range(20)])
-d={}
-divs=[]
-variables=['age','gender','avg_cs','avg_mat']
-d['avg_mat']=['2<3','3<4','4<5','<2']
-d['gender']=['0','1']
-d['avg_cs']=['3<4','4<5','<2']
-d['age']=['<=20', '20-23', '>23']
-import random
-maxIter=10
-for i in range(maxIter):
-    v=random.choice(variables)
-    evi=random.choice(d[v])
-    # v=random.choices(variables,k=random.randrange(len(variables)))
-    # evi=[]
-    # for var in v:
-    #     evi.append(random.choice(d[var]))
-    # for d in ['0','1','2','NA']:
-    #     delay_idx=np.where(data['delay']==d)[0]
-    #     delay_subset=data.values[delay_idx]
+#     print(len(divs), '-' * 20)
+#     print('Query:', v, 'given', e)
+#     print('rf: ', rf)
 
-    # rf = [ratio(RAW_DATA, lambda t: t[v]==evi, lambda t: t['delay']==d)for d in ['0','1','2','NA']]
-    rf = [ratio(RAW_DATA, lambda t: t['delay']==d, lambda t: t[v]==evi)for d in ['0','1','>=2','NA']]
-    rf=np.round(rf,8)
-    print('Evidence is :',[v,evi])
-    print('Relative Frequency is:',rf)
-    
-    div=[('delay',temp),rf]
-    for m in models:
-        print('\n', m.name)
-        ve = VariableElimination(m)
-        temp={}
-        temp[v]=evi
-        # print(temp)
-        q = ve.query(variables = ['delay'], evidence = temp,show_progress=False)
-        
-        div.extend([q.values, entropy(rf, q.values)])
-        print('PGM:', q.values, ', Divergence:', div[-1])
-    print('###############################')
-    divs.append(div)
-#         # Special treatment for missing samples
-#         #### if sum(rf) == 0: rf = [1/len(rf)]*len(rf) # Commented out on purpose
+#     div = [(v, e), rf]
+#     for m in models:
+#         ve = VariableElimination(m)
+#         q = ve.query(variables=[v], evidence=e, show_progress=False)
+#         #q = ve.query(variables=['delay','age'], evidence=e, show_progress=False)
+#         div.extend([q.values, entropy(q.values, rf)])
+#         print('PGM:', q.values, ', Divergence:', div[-1])
+#     divs.append(div)
 
-#         print(len(divs), '-'*20)
-#         print('Query:', v, 'given', e)
-#         print('rf: ', rf)
-         
-#         div = [(v, e), rf]
-#         for m in models:
-#             print('\n', m.name)
-#             ve = VariableElimination(m)
+# ##### only for task 4.5#################
+# # queries = []
+# # for target in ['delay']:
+# #     variables = [v for v in ['avg_cs','avg_mat','gender'] if v != target]
+# #     queries.extend([random_query(variables, target) for _ in range(200)])
+# # divs = []
+# # for v, e in queries:
+# #     # Relative frequencies, compared below
+# #     v=['delay','age']
+# #     rf = [ratio(RAW_DATA, lambda t: t[v] == s,
+# #                 lambda t: all(t[k] == w for k, w in e.items())) \
+# #             for s in S[v]]
 
-#             # e.update({'age':'<=20'})
-#             # q = ve.query(variables = [v], evidence = e)
-#             q = ve.query(variables = ['delay'], evidence = {'age': '>23'})
+# #     print(len(divs), '-' * 20)
+# #     print('Query:', v, 'given', e)
+# #     print('rf: ', rf)
 
-#             div.extend([q.values, entropy(rf, q.values)])
-#             print('PGM:', q.values, ', Divergence:', div[-1])
-#         divs.append(div)
-#     except:
-#         print('error2')
-#         # Error occurs if variable is both target and evidence. We can ignore it.
-#         # (Also, this case should be avoided with current code)
-#         pass
+# #     div = [(v, e), rf]
+# #     for m in models:
+# #         ve = VariableElimination(m)
 
-divs2 = [r for r in divs if math.isfinite(r[3]) and math.isfinite(r[5])] #checks if rf for both models if finite
-# What is the meaning of what is printed below?
-n = 2 #evidence has 2 variables
-print([len([r for r in divs2 if len(r[0][1])==n]),  #no of querries with exactly 2 variables in 
-       len([r for r in divs2 if len(r[0][1])==n and r[3] < r[5]]),
-       len([r for r in divs2 if len(r[0][1])==n and r[3] > r[5]]),
-       len([r for r in divs if len(r[0][1])==n and \
-            not(math.isfinite(r[3]) and math.isfinite(r[5]))]),
-       sum(r[3] for r in divs2 if len(r[0][1])==n)])
-
-
+# #         q = ve.query(variables=['delay','age'], evidence=e, show_progress=False)
+# #         div.extend([q.values, entropy(q.values, rf)])
+# #         print('PGM:', q.values, ', Divergence:', div[-1])
+# #     divs.append(div)
+# ##### only for task 4.5#################
+# divs2 = [r for r in divs if math.isfinite(r[3]) and math.isfinite(r[5])]
+# # What is the meaning of what is printed below?
+# print('##############################################################')
+# print('[N,No. of queries(N evidence),M1 wins,M2 wins,Sum Div M1,Sum Div M2, Number of inf]')
+# for n in [1,2,3,4]:
+#     print([n,len([r for r in divs2 if len(r[0][1]) == n]),
+#             len([r for r in divs2 if len(r[0][1]) == n and r[3] < r[5]]),
+#             len([r for r in divs2 if len(r[0][1]) == n and r[3] > r[5]]),
+#             len([r for r in divs if len(r[0][1]) == n and \
+#                 not (math.isfinite(r[3]) and math.isfinite(r[5]))]),
+#             sum(r[3] for r in divs2 if len(r[0][1]) == n),sum(r[5] for r in divs2 if len(r[0][1]) == n)])
+# print('##############################################################')
 # # The following is required for working with same data in next task:
-# # import pickle
-# # f = open('data.pickle', 'wb')
-# # pickle.dump(divs2, f)
-# # f.close()
-
-# separator()
-
+# import pickle
+# f = open('data.pickle', 'wb')
+# pickle.dump(divs2, f)
+# f.close()
 
 # End of Task 4
 
@@ -319,13 +291,13 @@ print([len([r for r in divs2 if len(r[0][1])==n]),  #no of querries with exactly
 #             v, e = div[0]
 #             # Relative frequencies from validation data, compared below
 #             rf = [ratio(raw_data2, lambda t: t[v]==s,
-#                         lambda t:all(t[w] == S[w][e[w]] for w in e)) \
+#                         lambda t:all(t[k] == w for k,w in e.items())) \
 #                   for s in S[v]]
 #             for m in models:
-#                 #print('\nModel:', m.edges())
+#                 print('\nModel:', m.edges())
 #                 ve = VariableElimination(m)
 #                 q = ve.query(variables = [v], evidence = e)
-#                 div.append(entropy(rf, q[v].values))
+#                 div.append(entropy(q.values,rf))
 #                 #print('PGM:', q[v].values, ', Divergence:', div[-1])
 #             divs.append(div)
 #         except IndexError:
@@ -336,13 +308,15 @@ print([len([r for r in divs2 if len(r[0][1])==n]),  #no of querries with exactly
 
 # # Modify the following lines according to your needs.
 # # Perhaps turn it into a loop as well.
-# n = 1
-# print([len([r for r in divs2 if len(r[0][1])==n]),
-#        len([r for r in divs2 if len(r[0][1])==n and r[3] < r[5]]),
-#        len([r for r in divs2 if len(r[0][1])==n and r[3] > r[5]]),
-#        len([r for r in divs2 if len(r[0][1])==n and r[-2] < r[-1]]),
-#        len([r for r in divs2 if len(r[0][1])==n and r[-2] > r[-1]])])
-
+# print('##############################################################')
+# print('[N,No. of queries(N evidence),M1 wins(100%Train),M2 wins(100%Train) wins,M1 wins(75%Train25%Val),M2 wins(75%Train25%Val)]')
+# for n in [1,2,3,4]:
+#     print([n,len([r for r in divs2 if len(r[0][1])==n]),
+#         len([r for r in divs2 if len(r[0][1])==n and r[3] < r[5]]),
+#         len([r for r in divs2 if len(r[0][1])==n and r[3] > r[5]]),
+#         len([r for r in divs2 if len(r[0][1])==n and r[-2] < r[-1]]),
+#         len([r for r in divs2 if len(r[0][1])==n and r[-2] > r[-1]])])
+# print('##############################################################')
 # separator()
 
 # End of Task 5
@@ -351,65 +325,94 @@ print([len([r for r in divs2 if len(r[0][1])==n]),  #no of querries with exactly
 
  # Task 6 ------------ Finding a better structure
 
-# data = pd.DataFrame(data=RAW_DATA)
+data = pd.DataFrame(data=RAW_DATA)
 
-# model1 = BayesianModel([('delay', 'age'),
-#                        ('delay', 'gender'),
-#                        ('delay', 'avg_mat'),
-#                        ('delay', 'avg_cs')])
+model1 = BayesianModel([('delay', 'age'),
+                       ('delay', 'gender'),
+                       ('delay', 'avg_mat'),
+                       ('delay', 'avg_cs')])
 
-# model2 = BayesianModel([('age', 'delay'),
-#                         ('gender', 'delay'),
-#                         ('avg_mat', 'delay'),
-#                         ('avg_cs', 'delay')])
+model2 = BayesianModel([('age', 'delay'),
+                        ('gender', 'delay'),
+                        ('avg_mat', 'delay'),
+                        ('avg_cs', 'delay')])
 
-# models = [model1, model2]
+models = [model1, model2]
 
-# [m.fit(data) for m in models] # ML-fit
+[m.fit(data) for m in models] # ML-fit
 
-# STATE_NAMES = model1.cpds[0].state_names
-# print('\nState names:')
-# for s in STATE_NAMES:
-#     print(s, STATE_NAMES[s])
+STATE_NAMES = model1.cpds[0].state_names
+print('\nState names:')
+for s in STATE_NAMES:
+    print(s, STATE_NAMES[s])
 
-# # Information for the curious:
-# # Structure-scores: http://pgmpy.org/estimators.html#structure-score
-# # K2-score: for instance http://www.lx.it.pt/~asmc/pub/talks/09-TA/ta_pres.pdf
-# # Additive smoothing and pseudocount: https://en.wikipedia.org/wiki/Additive_smoothing
-# # Scoring functions: https://www.cs.helsinki.fi/u/bmmalone/probabilistic-models-spring-2014/ScoringFunctions.pdf
-# k2 = K2Score(data)
-# print('Structure scores:', [k2.score(m) for m in models])
+# Information for the curious:
+# Structure-scores: http://pgmpy.org/estimators.html#structure-score
+# K2-score: for instance http://www.lx.it.pt/~asmc/pub/talks/09-TA/ta_pres.pdf
+# Additive smoothing and pseudocount: https://en.wikipedia.org/wiki/Additive_smoothing
+# Scoring functions: https://www.cs.helsinki.fi/u/bmmalone/probabilistic-models-spring-2014/ScoringFunctions.pdf
+k2 = K2Score(data)
 
-# separator()
+print('Structure scores [Model1 , Model2]:', [k2.score(m) for m in models])
 
-# print('\n\nExhaustive structure search based on structure scores:')
+separator()
 
-# from pgmpy.estimators import ExhaustiveSearch
+print('\n\nExhaustive structure search based on structure scores:')
 
-# # Warning: Doing exhaustive search on a PGM with all 5 variables
-# # takes more time than you should have to wait. Hence
-# # re-fit the models to data where some variable(s) has been removed
-# # for this assignement.
-# raw_data2 = {'age': data['age'],
-#              'avg_cs': data['avg_cs'],
-#              'avg_mat': data['avg_mat'],
-#              'delay': data['delay'], # Don't comment out this one
-#              #'gender': data['gender'],
-#              }
+from pgmpy.estimators import ExhaustiveSearch, HillClimbSearch,BicScore
 
-# data2 = pd.DataFrame(data=raw_data2)
+# Warning: Doing exhaustive search on a PGM with all 5 variables
+# takes more time than you should have to wait. Hence
+# re-fit the models to data where some variable(s) has been removed
+# for this assignement.
+raw_data2 = {'age': data['age'],
+             'avg_cs': data['avg_cs'],
+             'avg_mat': data['avg_mat'],
+             'delay': data['delay'], # Don't comment out this one
+            #  'gender': data['gender'],
+             }
 
-# import time
-# t0 = time.time()
-# # Uncomment below to perform exhaustive search
-# #searcher = ExhaustiveSearch(data2, scoring_method=K2Score(data2))
-# #search = searcher.all_scores()
-# print('time:', time.time() - t0)
+data2 = pd.DataFrame(data=raw_data2)
+
+import time
+t0 = time.time()
+print('Hill Climb Search (4 variables): BicScore')
+est = HillClimbSearch(data, scoring_method=BicScore(data))
+best_model = est.estimate()
+print('Best Model:' ,best_model.edges())
+print('Hill Climb Search (4 variables): K2Score')
+est = HillClimbSearch(data, scoring_method=K2Score(data))
+best_model = est.estimate()
+print('Best Model:' ,best_model.edges())
+
+raw_data2 = {'age': data['age'],
+             'avg_cs': data['avg_cs'],
+             'avg_mat': data['avg_mat'],
+             'delay': data['delay'], # Don't comment out this one
+             'gender': data['gender'],
+             }
+
+data2 = pd.DataFrame(data=raw_data2)
+import time
+t0 = time.time()
+print('Hill Climb Search (5 variables): BicScore')
+est = HillClimbSearch(data, scoring_method=BicScore(data))
+best_model = est.estimate()
+print('Best Model:' ,best_model.edges())
+print('Hill Climb Search (5 variables): K2Score')
+est = HillClimbSearch(data, scoring_method=K2Score(data))
+best_model = est.estimate()
+print('Best Model:' ,best_model.edges())
+
+# Uncomment below to perform exhaustive search
+searcher = ExhaustiveSearch(data2, scoring_method=K2Score(data2))
+search = searcher.all_scores()
+print('time:', time.time() - t0)
 
 # # Uncomment for printout:
-# #for score, model in search:
-# #    print("{0}        {1}".format(score, model.edges()))
+for score, model in search:
+   print("{0}        {1}".format(score, model.edges()))
 
-# separator()
+separator()
 
 # End of Task 6
