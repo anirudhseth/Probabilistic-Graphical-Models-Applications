@@ -8,19 +8,24 @@ if plotMuMapLines
     end
 end
 if plotTruePose
-    plot(truePose(1,:), truePose(2,:), 'gx');
+    plot(truePose(1,:), truePose(2,:), 'gx','MarkerSize',3);
 end
 if plotOdometry
-    plot(odometry(1,:), odometry(2,:), 'bx'); % cellfun(@(x) plot(x.odometry(1), x.odometry(2), 'bx'), simSteps,'UniformOutput',false);
+    plot(odometry(1,:), odometry(2,:), 'bx','MarkerSize',3);
+%     cellfun(@(x) plot(x.odometry(1), x.odometry(2), 'bx'), simSteps,'UniformOutput',false);
 end
 if plotMap
-    plot(map(1,:), map(2,:), 'ko');
+    plot(map(1,:), map(2,:), 'ko','MarkerSize',3);
+
 end
 if plotMuRob
-    plot(muRob(1,:), muRob(2,:), 'r.');
+    plot(muRob(1,:), muRob(2,:), 'r.','MarkerSize',5);
+
 end
 if plotMuMap
-    plot(muMap(1,:), muMap(2,:), 'rs');
+    plot(muMap(1,:), muMap(2,:), 'rs','MarkerSize',3);
+
 end
+% legend('','','','Mu Map Lines','True Pose','Odometry','Map','Mu Robot','Mu Map')
 end
 

@@ -132,67 +132,67 @@ FEATURES = [f for f in RAW_DATA]
 
  # Task 4 ------------ Comparing accuracy of PGM models
 
-# from scipy.stats import entropy
+from scipy.stats import entropy
  
-# data = pd.DataFrame(data=RAW_DATA)
+data = pd.DataFrame(data=RAW_DATA)
 
-# model1 = BayesianModel([('delay', 'age'),
-#                         ('delay', 'gender'),
-#                         ('delay', 'avg_mat'),
-#                         ('delay', 'avg_cs')])
+model1 = BayesianModel([('delay', 'age'),
+                        ('delay', 'gender'),
+                        ('delay', 'avg_mat'),
+                        ('delay', 'avg_cs')])
 
-# model2 = BayesianModel([('age', 'delay'),
-#                         ('gender', 'delay'),
-#                         ('avg_mat', 'delay'),
-#                         ('avg_cs', 'delay')])
+model2 = BayesianModel([('age', 'delay'),
+                        ('gender', 'delay'),
+                        ('avg_mat', 'delay'),
+                        ('avg_cs', 'delay')])
 
-# models = [model1, model2]
+models = [model1, model2]
 
-# [m.fit(data) for m in models]  # ML-fit
+[m.fit(data) for m in models]  # ML-fit
 
-# STATE_NAMES = model2.cpds[3].state_names
-# print('\nState names:')
-# for s in STATE_NAMES:
-#     print(s, STATE_NAMES[s])
+STATE_NAMES = model2.cpds[3].state_names
+print('\nState names:')
+for s in STATE_NAMES:
+    print(s, STATE_NAMES[s])
 
-# S = STATE_NAMES
+S = STATE_NAMES
 
-# VARIABLES = list(S.keys())
+VARIABLES = list(S.keys())
 
-# def random_query(variables, target):
-#     # Helper function, generates random evidence query
-#     n = random.randrange(1, len(variables) + 1)
-#     evidence = {v: random.choice(S[v]) for v in random.sample(variables, n)}
-#     if target in evidence: del evidence[target]
-#     return (target, evidence)
+def random_query(variables, target):
+    # Helper function, generates random evidence query
+    n = random.randrange(1, len(variables) + 1)
+    evidence = {v: random.choice(S[v]) for v in random.sample(variables, n)}
+    if target in evidence: del evidence[target]
+    return (target, evidence)
 
 # # for delay and age as target
-# queries = []
-# for target in ['delay']:
-#     variables = [v for v in VARIABLES if v != target]
-#     queries.extend([random_query(variables, target) for _ in range(200)])
+queries = []
+for target in ['delay']:
+    variables = [v for v in VARIABLES if v != target]
+    queries.extend([random_query(variables, target) for _ in range(200)])
 # # for target in ['age']:
 # #     variables = [v for v in ['delay','avg_mat','avg_cs','gender'] if v != target]
 # #     queries.extend([random_query(variables, target) for _ in range(200)])
-# divs = []
-# for v, e in queries:
-#     # Relative frequencies, compared below
-#     rf = [ratio(RAW_DATA, lambda t: t[v] == s,
-#                 lambda t: all(t[k] == w for k, w in e.items())) \
-#             for s in S[v]]
+divs = []
+for v, e in queries:
+    # Relative frequencies, compared below
+    rf = [ratio(RAW_DATA, lambda t: t[v] == s,
+                lambda t: all(t[k] == w for k, w in e.items())) \
+            for s in S[v]]
 
-#     print(len(divs), '-' * 20)
-#     print('Query:', v, 'given', e)
-#     print('rf: ', rf)
+    print(len(divs), '-' * 20)
+    print('Query:', v, 'given', e)
+    print('rf: ', rf)
 
-#     div = [(v, e), rf]
-#     for m in models:
-#         ve = VariableElimination(m)
-#         q = ve.query(variables=[v], evidence=e, show_progress=False)
-#         #q = ve.query(variables=['delay','age'], evidence=e, show_progress=False)
-#         div.extend([q.values, entropy(q.values, rf)])
-#         print('PGM:', q.values, ', Divergence:', div[-1])
-#     divs.append(div)
+    div = [(v, e), rf]
+    for m in models:
+        ve = VariableElimination(m)
+        q = ve.query(variables=[v], evidence=e, show_progress=False)
+        #q = ve.query(variables=['delay','age'], evidence=e, show_progress=False)
+        div.extend([q.values, entropy(q.values, rf)])
+        print('PGM:', q.values, ', Divergence:', div[-1])
+    divs.append(div)
 
 # ##### only for task 4.5#################
 # # queries = []
@@ -325,94 +325,94 @@ FEATURES = [f for f in RAW_DATA]
 
  # Task 6 ------------ Finding a better structure
 
-data = pd.DataFrame(data=RAW_DATA)
+# data = pd.DataFrame(data=RAW_DATA)
 
-model1 = BayesianModel([('delay', 'age'),
-                       ('delay', 'gender'),
-                       ('delay', 'avg_mat'),
-                       ('delay', 'avg_cs')])
+# model1 = BayesianModel([('delay', 'age'),
+#                        ('delay', 'gender'),
+#                        ('delay', 'avg_mat'),
+#                        ('delay', 'avg_cs')])
 
-model2 = BayesianModel([('age', 'delay'),
-                        ('gender', 'delay'),
-                        ('avg_mat', 'delay'),
-                        ('avg_cs', 'delay')])
+# model2 = BayesianModel([('age', 'delay'),
+#                         ('gender', 'delay'),
+#                         ('avg_mat', 'delay'),
+#                         ('avg_cs', 'delay')])
 
-models = [model1, model2]
+# models = [model1, model2]
 
-[m.fit(data) for m in models] # ML-fit
+# [m.fit(data) for m in models] # ML-fit
 
-STATE_NAMES = model1.cpds[0].state_names
-print('\nState names:')
-for s in STATE_NAMES:
-    print(s, STATE_NAMES[s])
+# STATE_NAMES = model1.cpds[0].state_names
+# print('\nState names:')
+# for s in STATE_NAMES:
+#     print(s, STATE_NAMES[s])
 
 # Information for the curious:
 # Structure-scores: http://pgmpy.org/estimators.html#structure-score
 # K2-score: for instance http://www.lx.it.pt/~asmc/pub/talks/09-TA/ta_pres.pdf
 # Additive smoothing and pseudocount: https://en.wikipedia.org/wiki/Additive_smoothing
 # Scoring functions: https://www.cs.helsinki.fi/u/bmmalone/probabilistic-models-spring-2014/ScoringFunctions.pdf
-k2 = K2Score(data)
+# k2 = K2Score(data)
 
-print('Structure scores [Model1 , Model2]:', [k2.score(m) for m in models])
+# print('Structure scores [Model1 , Model2]:', [k2.score(m) for m in models])
 
-separator()
+# separator()
 
-print('\n\nExhaustive structure search based on structure scores:')
+# print('\n\nExhaustive structure search based on structure scores:')
 
-from pgmpy.estimators import ExhaustiveSearch, HillClimbSearch,BicScore
+# from pgmpy.estimators import ExhaustiveSearch, HillClimbSearch,BicScore
 
 # Warning: Doing exhaustive search on a PGM with all 5 variables
 # takes more time than you should have to wait. Hence
 # re-fit the models to data where some variable(s) has been removed
 # for this assignement.
-raw_data2 = {'age': data['age'],
-             'avg_cs': data['avg_cs'],
-             'avg_mat': data['avg_mat'],
-             'delay': data['delay'], # Don't comment out this one
-            #  'gender': data['gender'],
-             }
+# raw_data2 = {'age': data['age'],
+#              'avg_cs': data['avg_cs'],
+#              'avg_mat': data['avg_mat'],
+#              'delay': data['delay'], # Don't comment out this one
+#             #  'gender': data['gender'],
+#              }
 
-data2 = pd.DataFrame(data=raw_data2)
+# data2 = pd.DataFrame(data=raw_data2)
 
-import time
-t0 = time.time()
-print('Hill Climb Search (4 variables): BicScore')
-est = HillClimbSearch(data, scoring_method=BicScore(data))
-best_model = est.estimate()
-print('Best Model:' ,best_model.edges())
-print('Hill Climb Search (4 variables): K2Score')
-est = HillClimbSearch(data, scoring_method=K2Score(data))
-best_model = est.estimate()
-print('Best Model:' ,best_model.edges())
+# import time
+# t0 = time.time()
+# print('Hill Climb Search (4 variables): BicScore')
+# est = HillClimbSearch(data, scoring_method=BicScore(data))
+# best_model = est.estimate()
+# print('Best Model:' ,best_model.edges())
+# print('Hill Climb Search (4 variables): K2Score')
+# est = HillClimbSearch(data, scoring_method=K2Score(data))
+# best_model = est.estimate()
+# print('Best Model:' ,best_model.edges())
 
-raw_data2 = {'age': data['age'],
-             'avg_cs': data['avg_cs'],
-             'avg_mat': data['avg_mat'],
-             'delay': data['delay'], # Don't comment out this one
-             'gender': data['gender'],
-             }
+# raw_data2 = {'age': data['age'],
+#              'avg_cs': data['avg_cs'],
+#              'avg_mat': data['avg_mat'],
+#              'delay': data['delay'], # Don't comment out this one
+#              'gender': data['gender'],
+#              }
 
-data2 = pd.DataFrame(data=raw_data2)
-import time
-t0 = time.time()
-print('Hill Climb Search (5 variables): BicScore')
-est = HillClimbSearch(data, scoring_method=BicScore(data))
-best_model = est.estimate()
-print('Best Model:' ,best_model.edges())
-print('Hill Climb Search (5 variables): K2Score')
-est = HillClimbSearch(data, scoring_method=K2Score(data))
-best_model = est.estimate()
-print('Best Model:' ,best_model.edges())
+# data2 = pd.DataFrame(data=raw_data2)
+# import time
+# t0 = time.time()
+# print('Hill Climb Search (5 variables): BicScore')
+# est = HillClimbSearch(data, scoring_method=BicScore(data))
+# best_model = est.estimate()
+# print('Best Model:' ,best_model.edges())
+# print('Hill Climb Search (5 variables): K2Score')
+# est = HillClimbSearch(data, scoring_method=K2Score(data))
+# best_model = est.estimate()
+# print('Best Model:' ,best_model.edges())
 
-# Uncomment below to perform exhaustive search
-searcher = ExhaustiveSearch(data2, scoring_method=K2Score(data2))
-search = searcher.all_scores()
-print('time:', time.time() - t0)
+# # Uncomment below to perform exhaustive search
+# searcher = ExhaustiveSearch(data2, scoring_method=K2Score(data2))
+# search = searcher.all_scores()
+# print('time:', time.time() - t0)
 
-# # Uncomment for printout:
-for score, model in search:
-   print("{0}        {1}".format(score, model.edges()))
+# # # Uncomment for printout:
+# for score, model in search:
+#    print("{0}        {1}".format(score, model.edges()))
 
-separator()
+# separator()
 
 # End of Task 6

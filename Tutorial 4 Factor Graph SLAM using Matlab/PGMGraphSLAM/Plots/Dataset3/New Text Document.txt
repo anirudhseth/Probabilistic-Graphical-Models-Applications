@@ -1,0 +1,12 @@
+temp=round(numPoses/8,0);
+finish=[1,temp*[1:7], numPoses];
+
+
+
+
+
+ITERATIONS = 25;
+CONVERGE = 1e-6;
+PAUSEDURATION = 2000 / 1000; % Seconds
+LeastError=100000;
+LeastIter=0;

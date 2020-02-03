@@ -1,0 +1,10 @@
+simOutFile =
+
+    'so_sym2_nk.txt'
+
+Iterations Needed:23
+
+Iterations=23
+Threshold=0.000001
+mean error(x, y, theta)=(-0.112773, 0.075149, 0.025557)
+mean absolute error=(0.132503, 0.107987, 0.028103)

@@ -1,0 +1,11 @@
+
+simOutFile =
+
+    'so_o3_ie.txt'
+
+Iterations Needed:6
+
+Iterations=6
+Threshold=0.000001
+mean error(x, y, theta)=(-0.232167, 0.224486, -0.005600)
+mean absolute error=(0.270718, 0.327050, 0.077065)
