@@ -6,8 +6,8 @@ close all;
 verbose = 3; % verbose = 0: no visual output, 1: only visual output in the end, 2: all visual output
 %verbose = 0; % verbose = 0: no visual output, 1: estimates and/or odometry and/or groundtruth, 2: (1)+ extra info, 3: (2)+ observation lines
 
-ITERATIONS = 50;
-CONVERGE = 1e-05;
+ITERATIONS = 20;
+CONVERGE = 1e-03;
 PAUSEDURATION = 2 / 1000; % Seconds
 
 
@@ -50,8 +50,6 @@ mapFile = 'map_pent_big_10.txt';
 % This init mainly just choses a good starting value for R the odometery 
 % covariance and Q the range bearing Covariance base on the filename.             
 [muRob0,sigma,R,Q,~] = init(simOutFile);
-R=R*30
-% Q=Q*30
 E_T = 2048;
 B = 0.35;
 R_L = 0.1;
@@ -98,40 +96,16 @@ muMap = zeros(size(map));
 % For plotting results
 truePose = zeros(3, size(simSteps, 2));
 odometry = truePose;
-for i = 1:size(simSteps, 2)-2
-    if(size(simSteps{i}.seenLandmarks,2)==2 && size(simSteps{i+1}.seenLandmarks,2)==2 && size(simSteps{i+2}.seenLandmarks,2)==2) %no of landmarks
-        for l=[1:2]
-        x1=simSteps{i}.seenLandmarks(1,l);
-        y1=simSteps{i}.seenLandmarks(2,l);
-        x2=simSteps{i+1}.seenLandmarks(1,l);
-        y2=simSteps{i+1}.seenLandmarks(2,l);
-        x3=simSteps{i+2}.seenLandmarks(1,l);
-        y3=simSteps{i+2}.seenLandmarks(2,l);
-        dist=pdist([x1,y1;x2,y2],'euclidean');
-        if(dist>1)
-%             fprintf('dist is %f and i is %d\n',dist,i);
-            simSteps{i+1}.seenLandmarks(1,l)=(simSteps{i}.seenLandmarks(1,l)+simSteps{i+2}.seenLandmarks(1,l))/2;
-            simSteps{i+1}.seenLandmarks(2,l)=(simSteps{i}.seenLandmarks(2,l)+simSteps{i+2}.seenLandmarks(2,l))/2;
-        end
-        end
+for i = 1:size(simSteps, 2)-1
+    if(size(simSteps{i}.seenLandmarks,2) && size(simSteps{i+1}.seenLandmarks,2)) %no of landmarks
+        x1=simSteps{i}.seenLandmarks(1,1)
+        y1=simSteps{i}.seenLandmarks(2,1)
+        x2=simSteps{i+1}.seenLandmarks(1,1)
+        y2=simSteps{i+1}.seenLandmarks(2,1)
+        dist=pdist([x1,y1;x2,y2],'euclidean')
+        if(dist>0.5)
+            fprintf('%f
     end
-    if(size(simSteps{i}.seenLandmarks,2)==1 && size(simSteps{i+1}.seenLandmarks,2)==1 && size(simSteps{i+2}.seenLandmarks,2)==1) %no of landmarks
-        for l=[1]
-        x1=simSteps{i}.seenLandmarks(1,l);
-        y1=simSteps{i}.seenLandmarks(2,l);
-        x2=simSteps{i+1}.seenLandmarks(1,l);
-        y2=simSteps{i+1}.seenLandmarks(2,l);
-        x3=simSteps{i+2}.seenLandmarks(1,l);
-        y3=simSteps{i+2}.seenLandmarks(2,l);
-        dist=pdist([x1,y1;x2,y2],'euclidean');
-        if(dist>1)
-%             fprintf('dist is %f and i is %d\n',dist,i)
-            simSteps{i+1}.seenLandmarks(1,l)=(simSteps{i}.seenLandmarks(1,l)+simSteps{i+2}.seenLandmarks(1,l))/2;
-            simSteps{i+1}.seenLandmarks(2,l)=(simSteps{i}.seenLandmarks(2,l)+simSteps{i+2}.seenLandmarks(2,l))/2;
-        end
-        end
-    end
-
 end
 for i = 1:size(simSteps, 2)
     truePose(:,i) = simSteps{i}.truePose;
@@ -139,8 +113,8 @@ for i = 1:size(simSteps, 2)
 end
 % finish=[1, numPoses];
 
-temp=round(numPoses/5,0);
-finish=[1,temp*[1:4], numPoses];
+temp=round(numPoses/8,0);
+finish=[1,temp*[1:7], numPoses];
 
 for subpart=1:size(finish,2)-1
 % Group robot poses that have seen the same landmark j (function is defined
