@@ -18,7 +18,7 @@ PAUSEDURATION = 2 / 1000; % Seconds
 % estimated covariance to it and use it to make motion factors.  
 %Then use the range and bearing to landmarks to make factors between poses
 %and landmarks.  
-
+xOff=(p*PixelWidth*xRes)/numOfProcessor
 %Coment out all but one pair of files
 
 %A small map with four landmarks 
