@@ -15,7 +15,6 @@ def targetDistribution(z):
 sigma=np.array([0.1,1,10,100])
 for sigmaP in sigma:
     n = 10000
-    alpha = 1
     x = 0.
     vec = []
     vec.append(x)
@@ -25,13 +24,13 @@ for sigmaP in sigma:
         current_vec=vec[i-1]
         can = x + proposal[i]
         aprob = np.amin([1.,targetDistribution(can)/targetDistribution(x)]) 
-        u = uniform(0,1)
+        u = np.random.uniform(0,1)
         if u < aprob:
             x = can
             vec.append(x)
         else:
             vec.append(x)
-    x = arange(-5,5,.1)
+    x = np.linspace(-5,5,1000)
     y = targetDistribution(x)
     plt.subplot(2, 1, 1)
     plt.title('Metropolis-Hastings ,$\sigma_p=:$'+str(sigmaP))
