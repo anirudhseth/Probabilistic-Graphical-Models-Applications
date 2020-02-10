@@ -11,7 +11,7 @@ def targetDistribution(z):
     a1=0.5
     a2=0.5
     return a1*stats.norm.pdf(z,mu1,sigma1)+a2*stats.norm.pdf(z,mu2,sigma2)
-
+# sigma=np.array([10])
 sigma=np.array([0.1,1,10,100])
 for sigmaP in sigma:
     n = 10000
@@ -38,7 +38,7 @@ for sigmaP in sigma:
     plt.plot(vec,'.',markersize=1)
 
     plt.subplot(2, 1, 2)
-    plt.hist(vec,50,density=True,alpha=0.4)
+    plt.hist(vec,75,density=True,alpha=0.4)
     plt.plot(x,y)
     plt.ylabel('Frequency')
     plt.xlabel('x')
