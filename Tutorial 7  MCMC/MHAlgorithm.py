@@ -15,13 +15,13 @@ def targetDistribution(z):
 sigma=np.array([0.1,1,10,100])
 for sigmaP in sigma:
     n = 10000
-    x = 0.
+    x_init = 0.
     vec = []
-    vec.append(x)
+    vec.append(x_init)
     muP=np.mean(vec)
     proposal = stats.norm(muP,sigmaP).rvs(n) 
     for i in range(1,n):
-        current_vec=vec[i-1]
+        x=vec[i-1]
         can = x + proposal[i]
         aprob = np.amin([1.,targetDistribution(can)/targetDistribution(x)]) 
         u = np.random.uniform(0,1)
