@@ -1,207 +1,111 @@
-# -*- coding: UTF-8 -*-
+# author Olga Mikheeva olgamik@kth.se
+# PGM tutorial on Variational Inference
+# Bayesian Mixture of Gaussians
 
-"""
-Coordinate Ascent Variational Inference process to
-approximate a Mixture of Gaussians (GMM) with known precisions
-"""
-
-from __future__ import absolute_import
-
-import argparse
-import math
-import os
-import pickle as pkl
-import sys
-from time import time
-
-import matplotlib.pyplot as plt
 import numpy as np
-
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
-
-from utils import dirichlet_expectation, log_beta_function
-
-from common import init_kmeans, softmax
-from viz import plot_iteration
-
-"""
-Parameters:
-    * maxIter: Max number of iterations
-    * dataset: Dataset path
-    * k: Number of clusters
-    * verbose: Printing time, intermediate variational parameters, plots, ...
-    * randomInit: Init assignations randomly or with Kmeans
-    
-Execution:
-    python gmm_means_gavi.py -dataset data_k2_1000.pkl -k 2 -verbose 
-"""
-
-parser = argparse.ArgumentParser(description='CAVI in mixture og gaussians')
-parser.add_argument('-maxIter', metavar='maxIter', type=int, default=300)
-parser.add_argument('-dataset', metavar='dataset', type=str,
-                    default='../../data/synthetic/2D/k2/data_k2_1000.pkl')
-parser.add_argument('-k', metavar='k', type=int, default=2)
-parser.add_argument('-verbose', dest='verbose', action='store_true')
-parser.set_defaults(verbose=False)
-parser.add_argument('-randomInit', dest='randomInit', action='store_true')
-parser.set_defaults(randomInit=False)
-args = parser.parse_args()
-
-K = args.k
-VERBOSE = args.verbose
-THRESHOLD = 1e-6
+import matplotlib.pyplot as plt
+import math
 
 
-def update_lambda_pi(lambda_phi, alpha_o):
+def generate_data(std, k, n, dim=1):
+    means = np.random.normal(0.0, std, size=(k, dim))
+    data = []
+    categories = []
+    for i in range(n):
+        cat = np.random.choice(k)  # sample component assignment
+        categories.append(cat)
+        data.append(np.random.multivariate_normal(means[cat, :], np.eye(dim)))  # sample data point from the Gaussian
+    return np.stack(data), categories, means
+
+
+def plot(x, y, c, means, title):
+    plt.scatter(x, y, c=c)
+    plt.scatter(means[:, 0], means[:, 1], c='r')
+    plt.title(title)
+    plt.show()
+
+
+def plot_elbo(elbo):
+    plt.plot(elbo)
+    plt.title('ELBO')
+    plt.show()
+
+
+def compute_elbo(data, psi, m, s2, sigma2, mu0):
+    """ Computes ELBO """
+    n, p = data.shape
+    k = m.shape[0]
+
+    elbo = 0
+
+    # TODO: compute ELBO
+    # expected log prior over mixture assignments
+
+    # expected log prior over mixture locations
+
+    # expected log likelihood
+
+    # entropy of variational location posterior
+
+    # entropy of the variational assignment posterior
+
+    return elbo
+
+
+def cavi(data, k, sigma2, m0, eps=1e-15):
+    """ Coordinate ascent Variational Inference for Bayesian Mixture of Gaussians
+    :param data: data
+    :param k: number of components
+    :param sigma2: prior variance
+    :param m0: prior mean
+    :param eps: stopping condition
+    :return (m_k, s2_k, psi_i)
     """
-    Update lambda_pi
-    """
-    return alpha_o + np.sum(lambda_phi, axis=0)
+    n, p = data.shape
+    # initialize randomly
+    m = np.random.normal(0., 1., size=(k, p))
+    s2 = np.square(np.random.normal(0., 1., size=(k, 1)))
+    psi = np.random.dirichlet(np.ones(k), size=n)
 
+    # compute ELBO
+    elbo = [compute_elbo(data, psi, m, s2, sigma2, m0)]
+    convergence = 1.
+    while convergence > eps:  # while ELBO not converged
+        # TODO: update categorical
 
-def update_lambda_phi(lambda_pi, lambda_m, lambda_beta,
-                      lambda_phi, delta_o, xn, N, D):
-    """
-    Update lambda_phi
-    """
-    c1 = dirichlet_expectation(lambda_pi)
-    for n in range(N):
-        aux = np.copy(c1)
-        for k in range(K):
-            c2 = xn[n, :] - lambda_m[k, :]
-            c3 = np.dot(delta_o, (xn[n, :] - lambda_m[k, :]).T)
-            c4 = -1. / 2 * np.dot(c2, c3)
-            c5 = D / (2. * lambda_beta[k])
-            aux[k] += c4 - c5
-        lambda_phi[n, :] = softmax(aux)
-    return lambda_phi
+        # TODO: update posterior parameters for the component means
 
+        # compute ELBO
+        elbo.append(compute_elbo(data, psi, m, s2, sigma2, m0))
+        convergence = elbo[-1] - elbo[-2]
 
-def update_lambda_beta(lambda_phi, beta_o):
-    """
-    Update lambda_beta
-    """
-    return beta_o + np.sum(lambda_phi, axis=0)
-
-
-def update_lambda_m(lambda_beta, lambda_phi, m_o, beta_o, xn, D):
-    """
-    Update lambda_m
-    """
-    d1 = np.tile(1. / lambda_beta, (D, 1)).T
-    d2 = m_o * beta_o + np.dot(lambda_phi.T, xn)
-    return d1 * d2
-
-
-def elbo(xn, D, K, alpha, m_o, beta_o, delta_o,
-         lambda_pi, lambda_m, lambda_beta, phi):
-    """
-    ELBO computation
-    """
-    lb = log_beta_function(lambda_pi)
-    lb -= log_beta_function(alpha)
-    lb += np.dot(alpha - lambda_pi, dirichlet_expectation(lambda_pi))
-    lb += K / 2. * np.log(np.linalg.det(beta_o * delta_o))
-    lb += K * D / 2.
-    for k in range(K):
-        a1 = lambda_m[k, :] - m_o
-        a2 = np.dot(delta_o, (lambda_m[k, :] - m_o).T)
-        a3 = beta_o / 2. * np.dot(a1, a2)
-        a4 = D * beta_o / (2. * lambda_beta[k])
-        a5 = 1 / 2. * np.log(np.linalg.det(lambda_beta[k] * delta_o))
-        a6 = a3 + a4 + a5
-        lb -= a6
-        b1 = phi[:, k].T
-        b2 = dirichlet_expectation(lambda_pi)[k]
-        b3 = np.log(phi[:, k])
-        b4 = 1 / 2. * np.log(np.linalg.det(delta_o) / (2. * math.pi))
-        b5 = xn - lambda_m[k, :]
-        b6 = np.dot(delta_o, (xn - lambda_m[k, :]).T)
-        b7 = 1 / 2. * np.diagonal(np.dot(b5, b6))
-        b8 = D / (2. * lambda_beta[k])
-        lb += np.dot(b1, b2 - b3 + b4 - b7 - b8)
-    return lb
+    return m, s2, psi, elbo
 
 
 def main():
+    # parameters
+    p = 2
+    k = 5
+    sigma = 5.
 
-    # Get data
-    with open('{}'.format(args.dataset), 'r') as inputfile:
-        data = pkl.load(inputfile)
-        xn = data['xn']
-    N, D = xn.shape
+    data, categories, means = generate_data(std=sigma, k=k, n=500, dim=p)
+    m = list()
+    s2 = list()
+    psi = list()
+    elbo = list()
+    best_i = 0
+    for i in range(10):
+        m_i, s2_i, psi_i, elbo_i = cavi(data, k=k, sigma2=sigma, m0=np.zeros(p))
+        m.append(m_i)
+        s2.append(s2_i)
+        psi.append(psi_i)
+        elbo.append(elbo_i)
+        if i > 0 and elbo[-1][-1] > elbo[best_i][-1]:
+            best_i = i
+    class_pred = np.argmax(psi[best_i], axis=1)
+    plot(data[:, 0], data[:, 1], categories, means, title='true data')
+    plot(data[:, 0], data[:, 1], class_pred, m[best_i], title='posterior')
+    plot_elbo(elbo[best_i])
 
-    if VERBOSE: init_time = time()
-
-    # Priors
-    alpha_o = [1.0] * K
-    m_o = np.array([0.0, 0.0])
-    beta_o = 0.01
-    delta_o = np.zeros((D, D), long)
-    np.fill_diagonal(delta_o, 1)
-
-    # Variational parameters intialization
-    lambda_phi = np.random.dirichlet(alpha_o, N) \
-        if args.randomInit else init_kmeans(xn, N, K)
-    lambda_beta = beta_o + np.sum(lambda_phi, axis=0)
-    lambda_m = np.tile(1. / lambda_beta, (2, 1)).T * \
-               (beta_o * m_o + np.dot(lambda_phi.T, xn))
-
-    # Plot configs
-    if VERBOSE:
-        plt.ion()
-        fig = plt.figure(figsize=(10, 10))
-        ax_spatial = fig.add_subplot(1, 1, 1)
-        circs = []
-        sctZ = None
-
-    # Inference
-    n_iters = 0
-    lbs = []
-    for _ in range(args.maxIter):
-
-        # Variational parameter updates
-        lambda_pi = update_lambda_pi(lambda_phi, alpha_o)
-        lambda_phi = update_lambda_phi(lambda_pi, lambda_m, lambda_beta,
-                                       lambda_phi, delta_o, xn, N, D)
-        lambda_beta = update_lambda_beta(lambda_phi, beta_o)
-        lambda_m = update_lambda_m(lambda_beta, lambda_phi, m_o, beta_o, xn, D)
-
-        # ELBO computation
-        lb = elbo(xn, D, K, alpha_o, m_o, beta_o, delta_o,
-                  lambda_pi, lambda_m, lambda_beta, lambda_phi)
-        lbs.append(lb)
-
-        if VERBOSE:
-            print('\n******* ITERATION {} *******'.format(n_iters))
-            print('lambda_pi: {}'.format(lambda_pi))
-            print('lambda_beta: {}'.format(lambda_beta))
-            print('lambda_m: {}'.format(lambda_m))
-            print('lambda_phi: {}'.format(lambda_phi[0:9, :]))
-            print('ELBO: {}'.format(lb))
-            ax_spatial, circs, sctZ = plot_iteration(ax_spatial, circs, sctZ,
-                                                     lambda_m, delta_o, xn,
-                                                     n_iters, K)
-
-        # Break condition
-        improve = lb - lbs[n_iters - 1]
-        if VERBOSE: print('Improve: {}'.format(improve))
-        if (n_iters == (args.maxIter - 1)) \
-                or (n_iters > 0 and 0 < improve < THRESHOLD):
-            if VERBOSE and D == 2: plt.savefig('generated/plot.png')
-            break
-
-        n_iters += 1
-
-    if VERBOSE:
-        print('\n******* RESULTS *******')
-        for k in range(K):
-            print('Mu k{}: {}'.format(k, lambda_m[k, :]))
-        final_time = time()
-        exec_time = final_time - init_time
-        print('Time: {} seconds'.format(exec_time))
-        print('Iterations: {}'.format(n_iters))
-        print('ELBOs: {}'.format(lbs))
-
-
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    main()

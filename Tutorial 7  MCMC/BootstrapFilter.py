@@ -24,7 +24,7 @@ def likelihood(t,y,x):
 
 
 NumberOfParticles=100
-for NumberOfParticles in  [50,100,200,500,1000,1500,2000]:
+for NumberOfParticles in  [50,100,200,500,1000,1500,2000,2100]:
     T=200 # Number of Time Steps
     x=np.zeros(T)
     y=np.zeros(T)
