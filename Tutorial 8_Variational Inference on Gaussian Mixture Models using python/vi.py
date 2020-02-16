@@ -22,12 +22,14 @@ def plot(x, y, c, means, title):
     plt.scatter(x, y, c=c)
     plt.scatter(means[:, 0], means[:, 1], c='r')
     plt.title(title)
+    plt.savefig('Plots/elbo'+title)
     plt.show()
 
 
 def plot_elbo(elbo):
     plt.plot(elbo)
     plt.title('ELBO')
+    plt.savefig('Plots/elbo')
     plt.show()
 
 
@@ -35,30 +37,9 @@ def compute_elbo(data, psi, m, s2, sigma2, mu0):
     """ Computes ELBO """
     n, p = data.shape
     k = m.shape[0]
-
-    elbo = 0
-
-    # TODO: compute ELBO
-    # expected log prior over mixture assignments
-    elbo+=-n*np.log(k)
-    # expected log prior over mixture locations
-    term=0
-    for j in range(k):
-        term=-np.dot(m[j],m[j].T)/2*s2[j]
-    elbo+=term
-    # expected log likelihood
-    term=0
     m2=np.zeros(5)
     for k in range(len(m2)):
         m2[k]=np.dot(m[k],m[k].T)
-    term=-0.5*(m2+s2.T)+np.dot(data,m.T)
-    elbo+=np.sum(np.inner(psi,term))
-    # entropy of variational location posterior
-    s_term=np.sum(0.5*np.log(s2))
-    elbo+=s_term
-    # entropy of the variational assignment posterior
-    elbo-=np.sum(np.log(psi))
-
     t1 = np.log(s2) - m/sigma2
     t1 = t1.sum()
     t2 = -0.5*(m2+s2.T)
@@ -66,7 +47,8 @@ def compute_elbo(data, psi, m, s2, sigma2, mu0):
     t2 -= np.log(psi)
     t2 *= psi
     t2 = t2.sum()
-    return t1+t2
+    elbo=t1+t2
+    return elbo
 
 
 def cavi(data, k, sigma2, m0, eps=1e-15):
