@@ -37,9 +37,9 @@ def compute_elbo(data, psi, m, s2, sigma2, mu0):
     """ Computes ELBO """
     n, p = data.shape
     k = m.shape[0]
-    m2=np.zeros(5)
-    for k in range(len(m2)):
-        m2[k]=np.dot(m[k],m[k].T)
+    m2=np.zeros(k)
+    for _ in range(len(m2)):
+        m2[_]=np.dot(m[_],m[_].T)
     t1 = np.log(s2) - m/sigma2
     t1 = t1.sum()
     t2 = -0.5*(m2+s2.T)
@@ -73,9 +73,9 @@ def cavi(data, k, sigma2, m0, eps=1e-15):
     while convergence > eps:  # while ELBO not converged
         # TODO: update categorical
         term1=np.dot(data,m.T) # dim is iXk so 500x5
-        m2=np.zeros(5)
-        for k in range(len(m2)):
-            m2[k]=np.dot(m[k],m[k].T)
+        m2=np.zeros(k)
+        for _ in range(len(m2)):
+            m2[_]=np.dot(m[_],m[_].T)
         term2=-0.5*(m2+s2.T)
         psi=np.exp(term1+term2)
         psi_sums = np.sum(psi,axis=1)
@@ -95,7 +95,7 @@ def cavi(data, k, sigma2, m0, eps=1e-15):
 def main():
     # parameters
     p = 2
-    k = 5
+    k = 7
     sigma = 5.
 
     data, categories, means = generate_data(std=sigma, k=k, n=500, dim=p)
