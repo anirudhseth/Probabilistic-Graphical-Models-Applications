@@ -5,7 +5,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-
+import random
 
 def generate_data(std, k, n, dim=1):
     means = np.random.normal(0.0, std, size=(k, dim))
@@ -40,16 +40,33 @@ def compute_elbo(data, psi, m, s2, sigma2, mu0):
 
     # TODO: compute ELBO
     # expected log prior over mixture assignments
-
+    elbo+=-n*np.log(k)
     # expected log prior over mixture locations
-
+    term=0
+    for j in range(k):
+        term=-np.dot(m[j],m[j].T)/2*s2[j]
+    elbo+=term
     # expected log likelihood
-
+    term=0
+    m2=np.zeros(5)
+    for k in range(len(m2)):
+        m2[k]=np.dot(m[k],m[k].T)
+    term=-0.5*(m2+s2.T)+np.dot(data,m.T)
+    elbo+=np.sum(np.inner(psi,term))
     # entropy of variational location posterior
-
+    s_term=np.sum(0.5*np.log(s2))
+    elbo+=s_term
     # entropy of the variational assignment posterior
+    elbo-=np.sum(np.log(psi))
 
-    return elbo
+    t1 = np.log(s2) - m/sigma2
+    t1 = t1.sum()
+    t2 = -0.5*(m2+s2.T)
+    t2 = np.dot(data, m.T) +t2
+    t2 -= np.log(psi)
+    t2 *= psi
+    t2 = t2.sum()
+    return t1+t2
 
 
 def cavi(data, k, sigma2, m0, eps=1e-15):
@@ -61,6 +78,7 @@ def cavi(data, k, sigma2, m0, eps=1e-15):
     :param eps: stopping condition
     :return (m_k, s2_k, psi_i)
     """
+    # np.random.seed(123)
     n, p = data.shape
     # initialize randomly
     m = np.random.normal(0., 1., size=(k, p))
@@ -72,9 +90,19 @@ def cavi(data, k, sigma2, m0, eps=1e-15):
     convergence = 1.
     while convergence > eps:  # while ELBO not converged
         # TODO: update categorical
-
+        term1=np.dot(data,m.T) # dim is iXk so 500x5
+        m2=np.zeros(5)
+        for k in range(len(m2)):
+            m2[k]=np.dot(m[k],m[k].T)
+        term2=-0.5*(m2+s2.T)
+        psi=np.exp(term1+term2)
+        psi_sums = np.sum(psi,axis=1)
+        psi = psi / psi_sums[:, np.newaxis]
         # TODO: update posterior parameters for the component means
-
+        m_num=np.matmul(psi.T,data)
+        m_den=((1/sigma2)+np.sum(psi,axis=0).reshape(-1,1))
+        m=m_num/m_den
+        s2=1/m_den
         # compute ELBO
         elbo.append(compute_elbo(data, psi, m, s2, sigma2, m0))
         convergence = elbo[-1] - elbo[-2]
@@ -100,11 +128,15 @@ def main():
         s2.append(s2_i)
         psi.append(psi_i)
         elbo.append(elbo_i)
+        # t=str(i)
+        # class_pred = np.argmax(psi_i, axis=1)
+        # plot(data[:, 0], data[:, 1],class_pred ,m_i, title=t)
+        # plt.show()
         if i > 0 and elbo[-1][-1] > elbo[best_i][-1]:
             best_i = i
     class_pred = np.argmax(psi[best_i], axis=1)
-    plot(data[:, 0], data[:, 1], categories, means, title='true data')
-    plot(data[:, 0], data[:, 1], class_pred, m[best_i], title='posterior')
+    plot(data[:, 0], data[:, 1], categories, means, title='true data ')
+    plot(data[:, 0], data[:, 1], class_pred, m[best_i], title='posterior ')
     plot_elbo(elbo[best_i])
 
 if __name__ == '__main__':

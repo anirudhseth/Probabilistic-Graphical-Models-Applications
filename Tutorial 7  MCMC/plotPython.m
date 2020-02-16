@@ -17,8 +17,8 @@ den = zeros(size(xx));
 % N=1500;
 % file='a2000.txt';
 % N=2000;
-file='a2100.txt';
-N=2100;
+file='a2000.txt';
+N=2000;
 figure
 hold on;
 [a,delimiterOut]=importdata(file);
