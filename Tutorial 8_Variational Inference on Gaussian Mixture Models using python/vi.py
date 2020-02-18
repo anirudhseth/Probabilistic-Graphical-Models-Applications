@@ -40,7 +40,7 @@ def compute_elbo(data, psi, m, s2, sigma2, mu0):
     m2=np.zeros(k)
     for _ in range(len(m2)):
         m2[_]=np.dot(m[_],m[_].T)
-    t1 = np.log(s2) - m/sigma2
+    t1 = np.log(s2) - m2/sigma2
     t1 = t1.sum()
     t2 = -0.5*(m2+s2.T)
     t2 = np.dot(data, m.T) +t2
