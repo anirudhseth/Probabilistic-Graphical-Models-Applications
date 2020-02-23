@@ -1,0 +1,275 @@
+Estimated mixture for document  0  is: 
+_______________________
+topic  0 :  0.8663444051906938
+topic  1 :  0.0042578988330295615
+topic  2 :  0.004747700419995932
+topic  3 :  0.12464999555628065
+_______________________
+True Mood is: happy
+_______________________
+Which has the following text:
+ 
+Oh Lord, I Love You
+Show me the desires of my heart
+Oh Lord I Love You
+Show me the desires of my heart
+
+I love You, I love You, I love You
+Yeah, Yeah, Yeah I love You
+I love You, I love You
+You are the desire of my heart
+(Repeat)
+
+I praise You, I praise You, I praise You
+Yes I praise You, I praise You
+You are the desires of my heart
+
+Adore You, adore You, adore You
+I adore You, adore You
+You are the desires of my heart
+
+Hallelujah, Hallelujah, Hallelujah, Hallelujah, Hallelujah
+You are the desire of my heart
+(Repeat until end)
+__________________________________________
+__________________________________________
+Estimated mixture for document  1  is: 
+_______________________
+topic  0 :  0.0012258950477553308
+topic  1 :  0.1385944788952363
+topic  2 :  0.5211734306512643
+topic  3 :  0.33900619540574406
+_______________________
+True Mood is: happy
+_______________________
+Which has the following text:
+ 
+The thrill is gone
+The thrill is gone away
+The thrill is gone, baby
+The thrill is gone away
+You know you done me wrong, baby
+And you'll be sorry someday
+
+The thrill is gone
+It's gone away from me, yeah
+The thrill is gone, baby
+The thrill is gone away from me
+Although I'll still live on
+But so lonely I'll be
+
+The thrill is gone
+It's gone away for good
+Oh, the thrill is gone
+Baby, it's gone away for good
+Someday I know I'll be over it all, baby
+Just like I know a good man should
+
+You know I'm free, free now, baby
+I'm free from your spell
+Oh, I'm free, free, free now
+I'm free from your spell
+And now that it's all over
+All I can do is wish you well
+__________________________________________
+__________________________________________
+Estimated mixture for document  2  is: 
+_______________________
+topic  0 :  0.22603768513312625
+topic  1 :  0.25270625147548764
+topic  2 :  0.28177575665923976
+topic  3 :  0.2394803067321464
+_______________________
+True Mood is: happy
+_______________________
+Which has the following text:
+ 
+Moments in love
+Moments in love
+Moments in love
+Moments in love
+
+Moments in love
+Moments in love
+Moments in love
+Moments in love
+__________________________________________
+__________________________________________
+Estimated mixture for document  3  is: 
+_______________________
+topic  0 :  0.3891033937496101
+topic  1 :  0.35090526750943113
+topic  2 :  0.0023121508664772136
+topic  3 :  0.2576791878744815
+_______________________
+True Mood is: sad
+_______________________
+Which has the following text:
+ 
+In your message you said
+You were going to bed
+But I'm not done with the night
+So I stayed up and read
+But your words in my head
+Got me mixed up so I turned out the light
+
+And I don't know how to slow it down
+My mind's racing from chasing pirates
+
+Now an ambulance screams
+While the silliest things
+(Are) flopping around in my brain
+And I try not to dream
+Up impossible schemes
+(That) swim around, wanna drown me insane
+
+And I don't know how to slow it down
+Oh my mind's racing from chasing pirates
+
+And I don't know how to slow it down
+Oh my mind's racing from chasing pirates
+My mind's racing from chasing pirates
+My mind's racing from chasing pirates
+__________________________________________
+__________________________________________
+Estimated mixture for document  4  is: 
+_______________________
+topic  0 :  0.1074564910560391
+topic  1 :  0.5955374033595621
+topic  2 :  0.2960522726657466
+topic  3 :  0.0009538329186522641
+_______________________
+True Mood is: relaxed
+_______________________
+Which has the following text:
+ 
+Good times they come and they go
+Never going to know
+What fate is going to blow
+Your way just hope that it feels right
+Sometimes it comes and it goes
+You take it ever so slow
+And then you lose it, then it flows right to you
+
+So we rely on the past
+Special moments that last
+Were they as tender as we dare to remember
+Such a fine time as this
+What could equal the bliss
+The thrill of the first kiss
+It'll blow right to you
+
+It's never as good as the first time
+Never as good as the first time
+
+Good times they come and they go
+Never going to know
+It's like the weather
+One day chicken next day feathers
+The rose we remember
+The thorns we forget
+We'd love and leave
+We never spend a minute on regret
+
+It is a possibility
+The more we know the less we see
+Second time, second time is not quite what it seems
+Natural as the way we came to be
+Second time won't live up to the dream
+
+It's never as good as the first time
+Never as good as the first time
+
+Natural as the way we came to be
+Second time won't live up to the dream
+Natural as the way we came to be
+Second time is not quite what it seemed
+
+It's never
+As good as the first time
+As the first time (never as good as the first time)
+The first time
+
+Natural as the way we came to be
+Second time won't live up to the dream
+Natural as the way we came to be
+Second time is not quite what it seemed
+
+It's never
+As good as the first time
+As the first time (never as good as the first time)
+The first time
+__________________________________________
+__________________________________________
+Estimated mixture for document  5  is: 
+_______________________
+topic  0 :  0.18132400916234323
+topic  1 :  0.43529661137381065
+topic  2 :  0.2874460009501398
+topic  3 :  0.0959333785137063
+_______________________
+True Mood is: angry
+_______________________
+Which has the following text:
+ 
+I look in your eyes and I can see
+We've loved so dangerously
+You're not trusting your heart to anyone
+You tell me you're gonna play it smart
+We're through before we start
+But I believe that we've only just begun
+
+When it's this good, there's no saying no
+I want you so, I'm ready to go
+
+Through the fire, to the limit, to the wall
+For a chance to be with you
+I'd gladly risk it all
+Through the fire
+Through whatever, come what may
+For a chance at loving you
+I'd take it all the way
+Right down to the wire
+Even through the fire
+
+I know you're afraid of what you feel
+You still need time to heal
+And I can help if you'll only let me try
+You touch me and something in me knew
+What I could have with you
+Now I'm not ready
+To kiss that dream goodbye
+
+When it's this sweet, there's no saying no
+I need you so, I'm ready to go
+
+Through the fire, to the limit, to the wall
+For a chance to be with you
+I'd gladly risk it all
+Through the fire
+Through whatever, come what may
+For a chance at loving you
+I'd take it all the way
+Right down to the wire
+Even through the fire
+
+Through the test of time
+
+Through the fire, to the limit, to the wall
+For a chance to be with you
+I'd gladly risk it all
+Through the fire
+Through whatever, come what may
+For a chance at loving you
+I'd take it all the way
+Right down to the wire
+Even through the fire
+
+To the wire, to the limit
+Through the fire, through whatever
+Through the fire, to the limit
+Through the fire, through whatever
+Through the fire, to the limit
+Through the fire, through whatever
+__________________________________________
+__________________________________________
