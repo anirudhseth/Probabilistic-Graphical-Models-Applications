@@ -1,0 +1,24 @@
+INFO:tensorflow:Model restored from step 5001, evaluating.
+I0227 19:01:38.165416 139803460818752 runners.py:329] Model restored from step 5001, evaluating.
+INFO:tensorflow:test elbo ll/t: -8.760990, iwae ll/t: -8.480670 fivo ll/t: -7.965333
+I0227 19:01:41.657938 139803460818752 runners.py:334] test elbo ll/t: -8.760990, iwae ll/t: -8.480670 fivo ll/t: -7.965333
+INFO:tensorflow:test elbo ll/seq: -537.606202, iwae ll/seq: -520.404730 fivo ll/seq: -488.781799
+I0227 19:01:41.658248 139803460818752 runners.py:336] test elbo ll/seq: -537.606202, iwae ll/seq: -520.404730 fivo ll/seq: -488.781799
+
+
+#sampling ess
+INFO:tensorflow:Model restored from step 5001, evaluating.
+I0228 20:31:10.086096 139947245004608 runners.py:329] Model restored from step 5001, evaluating.
+INFO:tensorflow:test elbo ll/t: -8.755498, iwae ll/t: -8.588602 fivo ll/t: -8.078573
+I0228 20:31:12.593199 139947245004608 runners.py:334] test elbo ll/t: -8.755498, iwae ll/t: -8.588602 fivo ll/t: -8.078573
+INFO:tensorflow:test elbo ll/seq: -537.269167, iwae ll/seq: -527.027875 fivo ll/seq: -495.730597
+I0228 20:31:12.593775 139947245004608 runners.py:336] test elbo ll/seq: -537.269167, iwae ll/seq: -527.027875 fivo ll/seq: -495.730597
+
+#sampling entropy
+INFO:tensorflow:Model restored from step 5001, evaluating.
+I0228 20:32:40.909224 140584786376512 runners.py:329] Model restored from step 5001, evaluating.
+INFO:tensorflow:test elbo ll/t: -8.839594, iwae ll/t: -8.547040 fivo ll/t: -8.070633
+I0228 20:32:43.440934 140584786376512 runners.py:334] test elbo ll/t: -8.839594, iwae ll/t: -8.547040 fivo ll/t: -8.070633
+INFO:tensorflow:test elbo ll/seq: -542.429638, iwae ll/seq: -524.477461 fivo ll/seq: -495.243389
+I0228 20:32:43.441656 140584786376512 runners.py:336] test elbo ll/seq: -542.429638, iwae ll/seq: -524.477461 fivo ll/seq: -495.243389
+

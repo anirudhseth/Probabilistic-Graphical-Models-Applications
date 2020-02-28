@@ -1,0 +1,6 @@
+model_checkpoint_path: "/tmp/fivoess-jsb2/model.ckpt-5001"
+all_model_checkpoint_paths: "/tmp/fivoess-jsb2/model.ckpt-3095"
+all_model_checkpoint_paths: "/tmp/fivoess-jsb2/model.ckpt-3729"
+all_model_checkpoint_paths: "/tmp/fivoess-jsb2/model.ckpt-4371"
+all_model_checkpoint_paths: "/tmp/fivoess-jsb2/model.ckpt-4922"
+all_model_checkpoint_paths: "/tmp/fivoess-jsb2/model.ckpt-5001"

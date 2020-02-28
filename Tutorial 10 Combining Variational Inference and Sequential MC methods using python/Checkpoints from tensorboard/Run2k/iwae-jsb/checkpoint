@@ -1,0 +1,6 @@
+model_checkpoint_path: "/tmp/iwae-jsb/model.ckpt-2001"
+all_model_checkpoint_paths: "/tmp/iwae-jsb/model.ckpt-0"
+all_model_checkpoint_paths: "/tmp/iwae-jsb/model.ckpt-587"
+all_model_checkpoint_paths: "/tmp/iwae-jsb/model.ckpt-1146"
+all_model_checkpoint_paths: "/tmp/iwae-jsb/model.ckpt-1719"
+all_model_checkpoint_paths: "/tmp/iwae-jsb/model.ckpt-2001"

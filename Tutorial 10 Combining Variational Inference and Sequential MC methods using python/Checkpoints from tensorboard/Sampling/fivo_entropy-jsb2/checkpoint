@@ -1,0 +1,6 @@
+model_checkpoint_path: "/tmp/fivoentropy-jsb2/model.ckpt-5001"
+all_model_checkpoint_paths: "/tmp/fivoentropy-jsb2/model.ckpt-2479"
+all_model_checkpoint_paths: "/tmp/fivoentropy-jsb2/model.ckpt-3120"
+all_model_checkpoint_paths: "/tmp/fivoentropy-jsb2/model.ckpt-3752"
+all_model_checkpoint_paths: "/tmp/fivoentropy-jsb2/model.ckpt-4381"
+all_model_checkpoint_paths: "/tmp/fivoentropy-jsb2/model.ckpt-5001"
