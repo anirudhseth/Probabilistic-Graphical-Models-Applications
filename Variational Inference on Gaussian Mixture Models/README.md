@@ -22,8 +22,8 @@ Association just-accepted (2017).
 and Techniques. MIT Press, 2009.
 
 
-4. Christopher M. Bishop,"Pattern Recognition and Machine Learning","Springer,
-2006.
+4. Christopher M. Bishop,"Pattern Recognition and Machine Learning",Springer
+2006
 
 
 5. Wainwright, Martin J., and Michael I. Jordan. "Graphical models, ex-
