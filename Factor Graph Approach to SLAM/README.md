@@ -1,32 +1,35 @@
-# Markov Chain Monte Carlo Methods 
-In this tutorial,  I implemented Metropolis-Hastings algorithm and a basic Sequential Monte Carlo algorithm the Bootstrap Filter in python.
+# Factor Graph Approach to Simultaneous Localization and Mapping
+In this tutorial we will look at the factor graph approach to formulating this
+problem and try out a simple Graph Slam implementation for point landmarks in
+2D measured by a lidar sensor from robot with wheel encoders.
 
 ## RESULTS
-<img src="Code/Plots/0.png"></img> 
-<img src="Code/Plots/1.png"></img> 
-<img src="Code/Plots/2.png"></img> 
-<img src="Code/Plots/3.png"></img> 
+<img src="PGMGraphSLAM/Plots/Dataset1_Final.jpg"></img> 
+<img src="PGMGraphSLAM/Plots/Dataset2_Final.jpg"></img> 
+<img src="PGMGraphSLAM/Plots/Dataset3_Final.jpg"></img> 
+<img src="PGMGraphSLAM/Plots/Dataset4_Final.jpg"></img> 
 
-<img src="Code/Plots/Dendity2100.png"></img> 
-<img src="Code/Plots/ObservationN2100.png"></img> 
 
 ## REFERNCES
-[1] Christophe Andrieu, Nando De Freitas, Arnaud Doucet, and Michael I Jordan. An Introduction to
-MCMC for Machine Learning. Machine learning, 50(1-2):5{43, 2003.
+[1] D. Koller and N. Friedman, Probabilistic graphical models: principles
+and techniques. MIT press, 2009.
 
 
-[2] Particle lter. https: // en. wikipedia. org/ wiki/ Particle_ filter .
+[2] S. Thrun, W. Burgard, and D. Fox, Probabilistic robotics. MIT press,
+2005.
 
 
-[3] Arnaud Doucet, Nando de Freitas, and Neil Gordon. Sequential Monte Carlo Methods in Practice.
-Springer, 2001.
+[3] G. Grisetti, R. Kummerle, C. Stachniss, and W. Burgard, \A tutorial
+on graph-based SLAM," IEEE Intelligent Transportation Systems Magazine,
+vol. 2, no. 4, pp. 31{43, 2010.
 
 
-[4] Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng. Handbook of Markov Chain Monte
-Carlo. CRC press, 2011.
+[4] F. Dellaert and M. Kaess, \Square Root SAM: Simultaneous localization
+and mapping via square root information smoothing," The International
+Journal of Robotics Research, vol. 25, no. 12, pp. 1181{1203,
+2006.
 
 
-[5] Thomas B. Schon, Fredrik Lindsten, Johan Dahlin, Johan Wagberg, Christian A. Naesseth, Andreas
-Svensson, and Liang Dai. Sequential Monte Carlo methods for system identication. 17th IFAC
-Symposium on System Identication (SYSID), 2015.
-
+[5] T. B. Schon and F. Lindsten, \Manipulating the multivariate gaussian
+density," Division of Au- tomatic Control, Linkoping University, Sweden,
+Tech. Rep, 201
