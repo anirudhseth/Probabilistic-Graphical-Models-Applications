@@ -6,6 +6,12 @@ for VI. Conceptually,  introduced a view of marginal likelihood estimators as ob
 algorithms for inference. These objectives are suited for MLE in latent variable models, and yield tighter
 VI bounds for some sequential models.
 
+## RESULTS
+<img src="Plots/Plot1.PNG"></img> 
+<img src="Plots/Plot2.PNG"></img> 
+<img src="Plots/Plot3.PNG"></img> 
+
+## REFERNCES
 [1] Chris J Maddison, John Lawson, George Tucker, Nicolas Heess, Mohammad Norouzi, Andriy Mnih,
 Arnaud Doucet, and Yee Teh. Filtering variational objectives. In Advances in Neural Information
 Processing Systems, pages 6576{6586, 2017.
