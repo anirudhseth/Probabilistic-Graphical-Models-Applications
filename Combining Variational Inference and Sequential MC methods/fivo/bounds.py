@@ -137,8 +137,7 @@ def iwae(cell,
 
 def ess_criterion(num_samples, log_ess, unused_t):
   """A criterion that resamples based on effective sample size."""
-  return log_ess <= tf.log(num_samples / 2.0)
-
+  return log_ess <= tf.log(num_samples / 2.0)  
 
 def never_resample_criterion(unused_num_samples, log_ess, unused_t):
   """A criterion that never resamples."""
@@ -263,6 +262,8 @@ def fivo(cell,
     log_weights_acc += log_alpha
     # Calculate the effective sample size.
     ess_num = 2 * tf.reduce_logsumexp(log_weights_acc, axis=0)
+    entropy_criterion_num=tf.reduce_logsumexp(log_weights_acc, axis=0)/num_samples
+    # entropy_criterion_num=tf.Print(entropy_criterion_num,[entropy_criterion_num],message="entropy_criterion_num before", summarize=10)
     ess_denom = tf.reduce_logsumexp(2 * log_weights_acc, axis=0)
     log_ess = ess_num - ess_denom
     # Calculate the ancestor indices via resampling. Because we maintain the
@@ -283,9 +284,11 @@ def fivo(cell,
     noresample_inds = tf.range(num_samples * batch_size)
     # Decide whether or not we should resample; don't resample if we are past
     # the end of a sequence.
+    ###########
+    # should_resample = entropy_criterion_num < 0.01
     should_resample = resampling_criterion(num_samples, log_ess, t)
-    should_resample = tf.logical_and(should_resample,
-                                     cur_mask[:batch_size] > 0.)
+    should_resample = tf.logical_and(should_resample,cur_mask[:batch_size] > 0.)
+    ###########
     float_should_resample = tf.to_float(should_resample)
     ancestor_inds = tf.where(
         tf.tile(should_resample, [num_samples]),
@@ -321,3 +324,4 @@ def fivo(cell,
   kl = tf.reduce_mean(tf.reshape(kl, [num_samples, batch_size]), axis=0)
   log_weights = tf.transpose(log_weights, perm=[0, 2, 1])
   return log_p_hat, kl, log_weights, log_ess, resampled
+
