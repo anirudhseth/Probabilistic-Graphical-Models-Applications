@@ -1,10 +1,10 @@
 # Variational Inference on Gaussian Mixture Models
-In this tutorial,  I focuses on Variational Inference on Multivariate Gaussian Mixture Model.The algorithmic derivation and implementation in python.
+In this tutorial,  I focus on Variational Inference on Multivariate Gaussian Mixture Model.The algorithmic derivation and implementation in python.
 
 ## RESULTS
 <img src="Code/Plots/ds1/elbo.png"></img> 
-<img src="Code/Plots/ds1/elbotrue data.png"></img>
-<img src="Code/Plots/ds1/elboposterior.png"></img>
+<img src="Code/Plots/ds1/elbotrue data .png"></img>
+<img src="Code/Plots/ds1/elboposterior .png"></img>
 
 
 ## REFERNCES
