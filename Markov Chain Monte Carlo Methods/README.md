@@ -2,8 +2,13 @@
 In this tutorial,  I implemented Metropolis-Hastings algorithm and a basic Sequential Monte Carlo algorithm the Bootstrap Filter in python.
 
 ## RESULTS
-<img src="Code/Plots/newsgroup.png"></img> 
-<img src="Code/Plots/ap.png"></img> 
+<img src="Code/Plots/0.png"></img> 
+<img src="Code/Plots/1.png"></img> 
+<img src="Code/Plots/2.png"></img> 
+<img src="Code/Plots/3.png"></img> 
+
+<img src="Code/Plots/Dendity2100.png"></img> 
+<img src="Code/Plots/ObservationN2100.png"></img> 
 
 ## REFERNCES
 [1] Christophe Andrieu, Nando De Freitas, Arnaud Doucet, and Michael I Jordan. An Introduction to
